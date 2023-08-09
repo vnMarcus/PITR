@@ -23,8 +23,16 @@
 
 ### Trên VM1 (Tạo bản full backup và đẩy lên Ceph)
 #### Backup
-- File dữ liệu `01.sql`:
+- File dữ liệu `01.sql`(https://github.com/vnMarcus/PITR/blob/main/inno/init/01.sql):
 
+- File cấu hình `my-custom.cnf`:
+  ``` bash
+    [mysqld]
+    server_id=1
+    log-bin=mysql-bin
+    expire_logs_days = 8
+    binlog_format=row
+  ```
 
 - Chạy file `docker-compose.yml`:
     ``` bash
@@ -118,6 +126,7 @@
   +  ` | gzip > /tmp/test.gz`: Phần này để chuyển dữ liệu của đầu ra của `innobackupex` sang lệnh `gzip`, sau đó nén dữ liệu và ghi vào tệp `test.gz` tại thư mục `tmp`.
 
 - Kết quả thu được trong folder `tmp` sẽ bao gồm 1 file nén `test.gz` (bản full backup) và 1 file log ghi lại quá trình backup.
+
 ![](images/anh_tmp.png)
 
 - Kiểm tra file `innobackupex.log`:
@@ -145,7 +154,7 @@ xtrabackup: Transaction log of lsn (<SLN>) to (<LSN>) was copied.
 vinh@vinh-HP-Laptop-14s-dq5xxx:~/Desktop/New_version/inno$ md5sum tmp/test.gz 
 5815389c2da9fee3c05bbdaf3ac0b54f  tmp/test.gz
 ```
-- Sau đó chạy file `push_file.py`:(nhớ để link file)
+- Sau đó chạy file `push_file.py`(https://github.com/vnMarcus/PITR/blob/main/inno/push_file.py):
 ``` bash
 vinh@vinh-HP-Laptop-14s-dq5xxx:~/Desktop/New_version/inno$ python3 push_file.py 
 File 'test.gz' uploaded successfully.
@@ -165,7 +174,7 @@ vinh@vinh:~/inno$ mkdir tmp
 vinh@vinh:~/inno$ mkdir store_data
 ```
 
-- Chạy file python sau để tải bản full backup `download_file.py`:
+- Chạy file python sau để tải bản full backup `download_file.py`(https://github.com/vnMarcus/PITR/blob/main/inno/download_file.py):
 ``` bash
 vinh@vinh:~/inno$ python3 download_file.py 
 test.gz downloaded successfully to /home/vinh/inno/store_data/test.gz
@@ -313,7 +322,7 @@ mysql> SHOW GRANTS FOR 'test_user'@'localhost';
 -> Như vậy có thể thấy dữ liệu đã được backup thành công.
 
 #### VM1 (Thêm dữ liệu và thực hiện sự cố)
-- Tại thời điểm `2023-08-09 15:37:13` thêm dữ liệu bằng các câu lệnh được lưu trong `script.sql`:
+- Tại thời điểm `2023-08-09 15:37:13` thêm dữ liệu bằng các câu lệnh được lưu trong `script.sql`(https://github.com/vnMarcus/PITR/blob/main/inno/script.sql):
 - Copy file vào container:
 ``` bash
 vinh@vinh-HP-Laptop-14s-dq5xxx:~/Desktop/New_version/inno$ docker cp script.sql mysql:/
@@ -417,6 +426,8 @@ DELIMITER ;
 vinh@vinh-HP-Laptop-14s-dq5xxx:~/Desktop/New_version/inno$     docker exec -it mysql bash
 root@3c7d7c97861b:/# mysqlbinlog /var/lib/mysql/mysql-bin.000003 --start-position=154 --stop-datetime="2023-08-09 15:38:00" > test.sql
 ```
+
+- File `test.sql`(https://github.com/vnMarcus/PITR/blob/main/inno/test.sql):
 
 - Chuyển dữ liệu ra máy host:
 ``` bash

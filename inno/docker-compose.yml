@@ -1,0 +1,44 @@
+version: '3.8'
+services:
+    db:
+        image: mysql:5.7-debian
+        container_name: mysql
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        environment:
+              MYSQL_ROOT_PASSWORD: root
+              MYSQL_INITDB_SKIP_TZINFO: 1
+              MYSQL_DATABASE: mydb
+              MYSQL_USER: user
+              MYSQL_PASSWORD: user
+              TZ: Asia/Ho_Chi_Minh
+        privileged: false
+        ports:
+          - 3306:3306
+        volumes:
+        - ./init:/docker-entrypoint-initdb.d
+        - ./var/lib/mysql:/var/lib/mysql:rw
+        - ./my-custom.cnf:/etc/mysql/conf.d/my-custom.cnf
+    backup:
+      image: ndvinhcn/test:db-backup-mysql5.7
+      container_name: backup
+      command: ["sleep", "3600"]
+      volumes:
+        - ./var/lib/mysql:/var/lib/mysql:rw
+        - ./tmp:/tmp
+        - ./backup:/backup
+
+
+
+
+
+
+# version: '3.8'
+# services:
+#     backup:
+#       image: 10.60.129.132:8890/db-backup-mysql5.7:1.1.0
+#       command: ["sleep", "3600"]
+#       volumes:
+#         # - ./var/lib/mysql:/var/lib/mysql:rw
+#         - ./var/run/mysqld:/var/run/mysqld:ro
+#         - ./tmp:/tmp

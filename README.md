@@ -183,7 +183,7 @@ Total 1 files downloaded successfully.
 ```
 - Test lại tính toàn vẹn bằng cách dùng `md5sum`:
 ``` bash
-vinh@vinh:~/inno$ md5sum ~/inno/store_data/test.gz
+vinh@vinh:~/inno$ md5sum ~/inno/tmp/test.gz
 5815389c2da9fee3c05bbdaf3ac0b54f  /home/vinh/inno/store_data/test.gz
 ```
 
@@ -395,6 +395,7 @@ mysql> SHOW MASTER STATUS;
 
 - Như vậy ta có thể dựa vào 2 thông tin trên để lấy mốc thời điểm bắt đầu khôi phục cho quá trình Point in time. Để hiểu rõ hơn, ta sẽ xem thử bên trong file  `mysql-bin.000003`:
 ``` bash
+vinh@vinh-HP-Laptop-14s-dq5xxx:~/Desktop/New_version/inno$ docker exec -it mysql bash
 root@3c7d7c97861b:/# mysqlbinlog --base64-output=decode-rows -vv /var/lib/mysql/mysql-bin.000003 | tail -15
 # at 28129
 #230809 15:39:28 server id 1  end_log_pos 28194 CRC32 0x321e57d3        Anonymous_GTID  last_committed=100      sequence_number=101rbr_only=no
@@ -445,8 +446,8 @@ Total 1 files uploaded successfully.
 - Tiếp tục sử dụng cơ chế `md5sum` để test tính toàn vẹn:
 
 ``` bash
-vinh@vinh-HP-Laptop-14s-dq5xxx:~/Desktop/New_version/inno$ md5sum script.sql 
-d80c94d8ae40cc6b4d9e0d49f39b374a  script.sql
+vinh@vinh-HP-Laptop-14s-dq5xxx:~/Desktop/New_version/inno$ md5sum test.sql
+bedb689259b9b0ca91016723cfa9f257  test.sql
 ```
 
 - Lúc này các file trên `Ceph`:
@@ -465,7 +466,7 @@ Total 1 files downloaded successfully.
 - Dùng `md5sum` để kiểm tra tính toàn vẹn:
 ``` bash
 vinh@vinh:~/inno$ md5sum store_data/test.sql 
-d80c94d8ae40cc6b4d9e0d49f39b374a  script.sql
+bedb689259b9b0ca91016723cfa9f257  store_data/test.sql
 ```
 -> Như vậy đã giống nhau.
 - Thực hiện restore:
@@ -480,6 +481,8 @@ bash-4.2# mysql -u root -p mydb < test.sql
 
 - Kiểm tra lại dữ liệu:
 ``` bash
+bash-4.2# mysql -u root -p
+
 mysql> select * from t1 where id = 200;
 +-----+--------+---------------------+
 | id  | name   | c_time              |

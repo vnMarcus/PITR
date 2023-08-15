@@ -9,6 +9,7 @@
 ## Luồng hoạt động 
 ![](../images/luong.png)
 
+
 - Mô tả: 
 
     + Trên VM1, sẽ tạo bản full backup sử dụng Percona Xtrabackup 2.4, sau đó đẩy lên Ceph
@@ -16,8 +17,9 @@
   
 ## Chi tiết quá trình
 ### Mô tả kịch bản
+- Dữ liệu được thêm vào lúc đầu: (https://github.com/vnMarcus/PITR/blob/main/xtrabackup/01.sql)
 - Trên máy VM1, sẽ dùng câu lệnh để thực hiện backup
-- Trong thời gian đó, vẫn `insert` thêm dữ liệu(INSERT INTO t1 (name) VALUES ('number 1'); ) với 1000 bản ghi
+- Trong thời gian đó, vẫn `insert` thêm dữ liệu(INSERT INTO t1 (name) VALUES ('number 1'); ) với 1000 bản ghi. Dữ liệu thêm vào trong file sau(https://github.com/vnMarcus/PITR/blob/main/xtrabackup/script.sql)
 - Kiểm tra tại sau khi giải nén file `backup` xong thì dữ liệu sẽ thế nào ? Và sau khi thực hiện bước `prepare` thì dữ liệu sẽ như nào ?
 
 ### Trên VM1 (Tạo bản full backup và đẩy lên Ceph)
@@ -295,7 +297,7 @@ mysql> SELECT * FROM t1 ORDER BY id DESC LIMIT 10;
 ![](../images/result1.png)
 
 - The DevOps Guide to Database Backupsfor MySQL and MariaDB
-![](../../images/Screenshot%20from%202023-08-15%2015-02-59.png)
+![](../images/Screenshot%20from%202023-08-15%2015-02-59.png)
 
 # Thắc mắc 
 - https://backup.ninja/news/hot-warm-and-cold-backups-mysql

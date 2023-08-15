@@ -284,8 +284,8 @@ mysql> SELECT * FROM t1 ORDER BY id DESC LIMIT 10;
 
 ### Kết quả cho thấy:
 
-- Trong quá trình backup, mình insert thêm 1000 dòng dữ liệu. Sau khi có được thư mục nén, nếu mình giải nén ngay lập tức, thì lúc đó dữ liệu được thêm vào mysql sẽ là khoảng hơn 500 dòng.
-- Sau khi thực hiện `prepare`, thì dữ liệu đã được thêm 1000 dòng, nó đã thực hiện `crash recovery` để dữ liệu được consistent.
+- Trong quá trình backup, mình insert thêm 1000 dòng dữ liệu. Sau khi có được file nén, nếu mình giải nén ngay lập tức, chưa thực hiện `prepare`, thì lúc đó dữ liệu được thêm vào mysql sẽ là khoảng hơn 500 dòng.
+- Sau khi thực hiện `prepare`, thì dữ liệu đã được thêm 1000 dòng, do nó đã thực hiện `crash recovery` để dữ liệu được consistent.
 
 - Kết luận tạm thời: 
 

@@ -292,12 +292,20 @@ mysql> SELECT * FROM t1 ORDER BY id DESC LIMIT 10;
     + Nó sử dụng cơ chế `Copy on write` để copy dữ liệu.
     + Nó không khóa, dữ liệu vẫn có thể thay đổi trong quá trình backup. Chính vì vậy như trên `docs`, Percona XtraBackup cũng đã khẳng định dữ liệu sau khi thực hiện `backup` thì nó là inconsistent, và cần phải thực hiện thêm bước `prepare`.
 
-# Tài liệu tham khảo
-- Docs: https://docs.percona.com/percona-xtrabackup/2.4/how_xtrabackup_works.html
+- Link số 1 phía dưới:
 ![](../images/result1.png)
 
-- The DevOps Guide to Database Backupsfor MySQL and MariaDB
+
+- Tài liệu số 2 phía dưới:
 ![](../images/Screenshot%20from%202023-08-15%2015-02-59.png)
+
+
+
+# Tài liệu tham khảo
+- Docs: https://docs.percona.com/percona-xtrabackup/2.4/how_xtrabackup_works.html
+
+- The DevOps Guide to Database Backupsfor MySQL and MariaDB
+
 
 # Thắc mắc 
 - https://backup.ninja/news/hot-warm-and-cold-backups-mysql

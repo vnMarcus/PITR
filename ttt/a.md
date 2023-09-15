@@ -5,6 +5,9 @@
     + Các bản full backup và binary log sẽ được nén và đẩy lên Ceph.
 
 
+![Alt text](/images/luong.png)
+
+
 ### API lấy danh sách các DB Instance
 ![Alt text](image-1.png)
 
